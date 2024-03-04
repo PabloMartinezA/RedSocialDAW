@@ -17,6 +17,9 @@ import { verifyToken } from "./middleware/auth.js";
 import User from "./models/Usuarios.js";
 import Post from "./models/Publicaciones.js";
 import { users, posts } from "./data/index.js";
+import soap from "soap";
+import { readFileSync } from "fs";
+import service from "./services/service.js";
 
 /* CONFIGURACIONES */
 const __filename = fileURLToPath(import.meta.url);
@@ -31,6 +34,9 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
+
+/* WSDL */
+const xml = readFileSync('service.wsdl', 'utf8');
 
 /* ALMACENAMIENTO DE ARCHIVOS */
 const storage = multer.diskStorage({
@@ -61,7 +67,10 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, () => console.log(`Server Port ${PORT}`));
+    app.listen(PORT, () => {
+      soap.listen(app, '/soap', service, xml, () => console.log('Servidor SOAP escuchando en localhost:3001/soap'));
+      console.log(`Server Port ${PORT}`);
+    });
 
     /* INICIALIZACION DE DATOS */
     //User.insertMany(users);

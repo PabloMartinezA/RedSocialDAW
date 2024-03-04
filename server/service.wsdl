@@ -1,0 +1,85 @@
+<definitions name="ZSocialService"
+  targetNamespace="http://www.examples.com/wsdl/ZSocialService.wsdl"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:tns="http://www.examples.com/wsdl/ZSocialService.wsdl"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <message name="GetUserRequest">
+        <xsd:element name="id" type="xsd:string"/>
+    </message>
+    <message name="GetUserResponse">
+        <xsd:complexType name="user">
+            <xsd:sequence>
+                <xsd:element name="nombre" type="xsd:string"/>
+                <xsd:element name="apellido" type="xsd:string"/>
+                <xsd:element name="email" type="xsd:string"/>
+                <xsd:element name="imgRuta" type="xsd:string"/>
+                <xsd:element name="ubicacion" type="xsd:string"/>
+                <xsd:element name="ocupacion" type="xsd:string"/>
+                <xsd:element name="vistasPerfil" type="xsd:integer"/>
+                <xsd:element name="impresiones" type="xsd:integer"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </message>
+
+    <message name="GetFriendsRequest">
+        <xsd:element name="id" type="xsd:string"/>
+    </message>
+    <message name="GetFriendsResponse">
+        <xsd:complexType name="friends">
+            <xsd:sequence>
+                <xsd:complexType name="user">
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:string"/>
+                        <xsd:element name="nombre" type="xsd:string"/>
+                        <xsd:element name="apellido" type="xsd:string"/>
+                        <xsd:element name="email" type="xsd:string"/>
+                        <xsd:element name="imgRuta" type="xsd:string"/>
+                        <xsd:element name="ubicacion" type="xsd:string"/>
+                        <xsd:element name="ocupacion" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:sequence>
+        </xsd:complexType>
+    </message>
+
+    <portType name="Users_PortType">
+        <operation name="getUser">
+            <input message="tns:GetUserRequest"/>
+            <output message="tns:GetUserResponse"/>
+        </operation>
+        <operation name="getFriends">
+            <input message="tns:GetFriendsRequest"/>
+            <output message="tns:GetFriendsResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="Users_Binding" type="tns:Users_PortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getUser">
+            <soap:operation soapAction="getUser"/>
+            <input>
+                <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:examples:ZSocialService" use="encoded"/>
+            </input>
+            <output>
+                <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:examples:ZSocialService" use="encoded"/>
+            </output>
+        </operation>
+        <operation name="getFriends">
+            <soap:operation soapAction="getFriends"/>
+            <input>
+                <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:examples:ZSocialService" use="encoded"/>
+            </input>
+            <output>
+                <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:examples:ZSocialService" use="encoded"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="ZSocial_Service">
+        <documentation>WSDL File for ZSocialService</documentation>
+        <port binding="tns:Users_Binding" name="Users_Port">
+            <soap:address location="http://localhost:51515/getUser/" />
+        </port>
+    </service>
+</definitions>
