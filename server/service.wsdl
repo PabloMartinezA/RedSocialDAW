@@ -27,17 +27,19 @@
     </message>
     <message name="GetFriendsResponse">
         <xsd:complexType name="friends">
-            <xsd:complexType name="user">
-                <xsd:sequence>
-                    <xsd:element name="id" type="xsd:string"/>
-                    <xsd:element name="nombre" type="xsd:string"/>
-                    <xsd:element name="apellido" type="xsd:string"/>
-                    <xsd:element name="email" type="xsd:string"/>
-                    <xsd:element name="imgRuta" type="xsd:string"/>
-                    <xsd:element name="ubicacion" type="xsd:string"/>
-                    <xsd:element name="ocupacion" type="xsd:string"/>
-                </xsd:sequence>
-            </xsd:complexType>
+            <xsd:sequence>
+                <xsd:complexType name="user">
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:string"/>
+                        <xsd:element name="nombre" type="xsd:string"/>
+                        <xsd:element name="apellido" type="xsd:string"/>
+                        <xsd:element name="email" type="xsd:string"/>
+                        <xsd:element name="imgRuta" type="xsd:string"/>
+                        <xsd:element name="ubicacion" type="xsd:string"/>
+                        <xsd:element name="ocupacion" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:sequence>
         </xsd:complexType>
     </message>
 
