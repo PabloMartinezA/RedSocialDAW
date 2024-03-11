@@ -119,6 +119,9 @@ const Form = () => {
         resetForm,
       }) => (
         <form onSubmit={handleSubmit}>
+          <Typography fontWeight="1000" variant="h1" sx={{ mb: "1.5rem" }}>
+            {isLogin ? "¡Bienvenido de vuelta!" : "¡Bienvenido!"}
+          </Typography>
           <Box
             display="grid"
             gap="30px"
@@ -262,8 +265,8 @@ const Form = () => {
               }}
             >
               {isLogin
-                ? "No tienes una cuenta? Crea una cuenta nueva aqui."
-                : "Ya tienes una cuenta? Inicia sesion aqui."}
+                ? "¿No eres parte de nuestra comunidad? Registrate."
+                : "¿Ya tienes una cuenta? Inicia sesion aqui."}
             </Typography>
           </Box>
         </form>
