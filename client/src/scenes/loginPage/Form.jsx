@@ -15,21 +15,20 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
-import { Palette } from "@mui/icons-material";
 
 const registerSchema = yup.object().shape({
-  nombre: yup.string().required("El nombre es requerido"),
-  apellido: yup.string().required("El apellido es requerido"),
-  email: yup.string().email("email invalido").required("El email es requerido"),
-  contrasena: yup.string().required("La contrasena es requerida"),
-  ubicacion: yup.string().required("La ubicacion es requerida"),
-  ocupacion: yup.string().required("La ocupacion es requerida"),
-  img: yup.string().required("Se requiere una imagen"),
+  nombre: yup.string().required("required"),
+  apellido: yup.string().required("required"),
+  email: yup.string().email("invalid email").required("required"),
+  contrasena: yup.string().required("required"),
+  ubicacion: yup.string().required("required"),
+  ocupacion: yup.string().required("required"),
+  img: yup.string().required("required"),
 });
 
 const loginSchema = yup.object().shape({
-  email: yup.string().email("email invalido").required("El email es requerido"),
-  contrasena: yup.string().required("La contrasena es requerida"),
+  email: yup.string().email("invalid email").required("required"),
+  contrasena: yup.string().required("required"),
 });
 
 const initialValuesRegister = {
@@ -48,21 +47,21 @@ const initialValuesLogin = {
 };
 
 const Form = () => {
-  const { pageType, setPageType } = useState("login");
-  const { pallete } = useTheme();
+  const [pageType, setPageType] = useState("login");
+  const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isNonMobile = useMediaQuery("(min-width: 600px)");
+  const isNonMobile = useMediaQuery("(min-width:600px)");
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
 
   const register = async (values, onSubmitProps) => {
-    // Esto permite enviar informacion del formulario con imagen
+    // Esto nos permite enviar informacion del formulario incluyendo imagenes
     const formData = new FormData();
     for (let value in values) {
       formData.append(value, values[value]);
     }
-    formData.append("imgRuta", values.picture.name);
+    formData.append("imgRuta", values.img.name);
 
     const savedUserResponse = await fetch(
       "http://localhost:3001/auth/register",
@@ -119,13 +118,13 @@ const Form = () => {
         setFieldValue,
         resetForm,
       }) => (
-        <form onSubtmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <Box
             display="grid"
             gap="30px"
             gridTemplateColumns="repeat(4, minmax(0, 1fr))"
             sx={{
-              "& > dix": { gridColumn: isNonMobile ? undefined : "span 4" },
+              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
             {isRegister && (
@@ -176,7 +175,7 @@ const Form = () => {
                 />
                 <Box
                   gridColumn="span 4"
-                  border={`1px solid ${pallete.neutral.medium}`}
+                  border={`1px solid ${palette.neutral.medium}`}
                   borderRadius="5px"
                   p="1rem"
                 >
@@ -190,16 +189,16 @@ const Form = () => {
                     {({ getRootProps, getInputProps }) => (
                       <Box
                         {...getRootProps()}
-                        border={`2px dashed ${Palette.primary.main}`}
+                        border={`2px dashed ${palette.primary.main}`}
                         p="1rem"
                         sx={{ "&:hover": { cursor: "pointer" } }}
                       >
                         <input {...getInputProps()} />
                         {!values.img ? (
-                          <p>Agregar Img Aqui</p>
+                          <p>Agregar una imagen aqui</p>
                         ) : (
                           <FlexBetween>
-                            <Typography> {values.img.name} </Typography>
+                            <Typography>{values.img.name}</Typography>
                             <EditOutlinedIcon />
                           </FlexBetween>
                         )}
@@ -233,7 +232,7 @@ const Form = () => {
             />
           </Box>
 
-          {/* Botones */}
+          {/* BOTONES */}
           <Box>
             <Button
               fullWidth
@@ -241,30 +240,30 @@ const Form = () => {
               sx={{
                 m: "2rem 0",
                 p: "1rem",
-                backgroundColor: pallete.primary.main,
-                color: pallete.background.alt,
-                "&:hover": { color: pallete.primary.main },
+                backgroundColor: palette.primary.main,
+                color: palette.background.alt,
+                "&:hover": { color: palette.primary.main },
               }}
             >
-              {isLogin ? "Iniciar Sesion" : "Registrarse"}
+              {isLogin ? "INICIAR SESION" : "REGISTRARSE"}
             </Button>
             <Typography
               onClick={() => {
-                setPageType(isLogin ? "Registrarse" : "Iniciar Sesion");
+                setPageType(isLogin ? "register" : "login");
                 resetForm();
               }}
               sx={{
                 textDecoration: "underline",
-                color: pallete.primary.main,
+                color: palette.primary.main,
                 "&:hover": {
                   cursor: "pointer",
-                  color: pallete.primary.light,
+                  color: palette.primary.light,
                 },
               }}
             >
               {isLogin
-                ? "No tienes cuenta? Registrate aqui"
-                : "Ya tienes cuenta? Inicia Sesion aqui"}
+                ? "No tienes una cuenta? Crea una cuenta nueva aqui."
+                : "Ya tienes una cuenta? Inicia sesion aqui."}
             </Typography>
           </Box>
         </form>
