@@ -15,6 +15,8 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
+import { Palette } from "@mui/icons-material";
+import fetch from "fetch.js";
 
 const registerSchema = yup.object().shape({
   nombre: yup.string().required("required"),
@@ -64,7 +66,7 @@ const Form = () => {
     formData.append("imgRuta", values.img.name);
 
     const savedUserResponse = await fetch(
-      "http://localhost:3001/auth/register",
+      "/auth/register",
       {
         method: "POST",
         body: formData,
@@ -79,7 +81,7 @@ const Form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("http://localhost:3001/auth/login", {
+    const loggedInResponse = await fetch("/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
