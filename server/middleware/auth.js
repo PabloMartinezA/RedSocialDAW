@@ -19,3 +19,20 @@ export const verifyToken = async (req, res, next) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const socketVerifyToken = async (socket, next) => {
+  try {
+    const token = socket.handshake.auth?.token
+    console.log(token);
+    if (!token) {
+      return next({ type: 'auth', error: 'Acceso denegado'});
+    }
+
+    const { id } = jwt.verify(token, process.env.JWT_SECRET);
+    socket.userId = id;
+    return next();
+  } catch (err) {
+    console.error(err);
+    return next({ type: 'internal', error: 'Internal server error'});
+  }
+};
