@@ -91,7 +91,7 @@ const Navbar = () => {
           </IconButton>
           <Notifications sx={{ fontSize: "25px" }} />
           <Help sx={{ fontSize: "25px" }} />
-          <FormControl variant="standar" value={nombreCompleto}>
+          <FormControl variant="standard" value={nombreCompleto}>
             <Select
               value={nombreCompleto}
               sx={{
@@ -170,7 +170,7 @@ const Navbar = () => {
             </IconButton>
             <Notifications sx={{ fontSize: "25px" }} />
             <Help sx={{ fontSize: "25px" }} />
-            <FormControl variant="standar" value={nombreCompleto}>
+            <FormControl variant="standard" value={nombreCompleto}>
               <Select
                 value={nombreCompleto}
                 sx={{

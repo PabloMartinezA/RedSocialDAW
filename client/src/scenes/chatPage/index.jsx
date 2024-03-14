@@ -7,6 +7,7 @@ import UserChatPreview from "components/UserChatPreview";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { socket } from "socket";
+import api from "api";
 
 const ChatPage = () => {
   const [amigos, setAmigos] = useState([]);
@@ -47,10 +48,10 @@ const ChatPage = () => {
   }, [token]);
 
   useEffect(() => {
-    async function fetchAmigos() {
+    async function getAmigos() {
       setAmigos([]);
-      const response = await fetch(
-        `${process.env.BACKEND_BASE_URL}/usuarios/${_id}/friends`,
+      const response = await api(
+        `/usuarios/${_id}/friends`,
         {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
@@ -60,7 +61,7 @@ const ChatPage = () => {
       setAmigos(data);
     }
 
-    fetchAmigos();
+    getAmigos();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

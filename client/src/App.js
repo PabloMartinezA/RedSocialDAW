@@ -31,6 +31,10 @@ function App() {
                 path="/profile/:userId"
                 element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
               />
+              <Route
+                path="/chat"
+                element={isAuth ? <ChatPage /> : <Navigate to="/" />}
+              />
             </Routes>
           </SnackbarProvider>
         </ThemeProvider>

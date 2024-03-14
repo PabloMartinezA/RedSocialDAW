@@ -12,7 +12,7 @@ import WidgetWrapper from "components/WidgetWrapper";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import fetch from "fetch.js";
+import api from "api";
 
 const UserWidget = ({ usuarioId, imgRuta }) => {
   const [user, setUser] = useState(null);
@@ -24,14 +24,13 @@ const UserWidget = ({ usuarioId, imgRuta }) => {
   const main = palette.neutral.main;
 
   const getUser = async () => {
-    const response = await fetch(
+    const data = await api(
       `/usuarios/${usuarioId}`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    const data = await response.json();
     setUser(data);
   };
 
