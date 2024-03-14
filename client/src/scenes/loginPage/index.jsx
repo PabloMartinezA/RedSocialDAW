@@ -25,8 +25,9 @@ const LoginPage = () => {
         backgroundColor={theme.palette.background.alt}
       >
         <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-          Buenas tardes (^.^)
+          Z la red social para profesionales
         </Typography>
+        <Form />
       </Box>
     </Box>
   );
