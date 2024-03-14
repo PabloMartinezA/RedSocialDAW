@@ -1,9 +1,5 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import Navbar from "scenes/navbar";
-import UserImage from "components/UserImage";
-import FlexBetween from "components/FlexBetween";
-import WidgetWrapper from "components/WidgetWrapper";
-import UserChatPreview from "components/UserChatPreview";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { socket } from "socket";
@@ -16,7 +12,7 @@ const ChatPage = () => {
   const [mensaje, setMensaje] = useState("");
   const [isConnected, setIsConnected] = useState(socket.connected);
   const token = useSelector((state) => state.token);
-  const { _id, imgRuta } = useSelector((state) => state.user);
+  const { _id } = useSelector((state) => state.user);
 
   useEffect(() => {
     function onConnect() {
@@ -45,50 +41,26 @@ const ChatPage = () => {
       socket.off("disconnect", onDisconnect);
       socket.disconnect();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   useEffect(() => {
     async function getAmigos() {
-      setAmigos([]);
-      const response = await api(
+      const data = await api(
         `/usuarios/${_id}/friends`,
         {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      const data = await response.json();
-      setAmigos(data);
+      if (data) {
+        setAmigos(data);
+      }
     }
 
     getAmigos();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // useEffect(() => {
-  //   async function fetchMensajes() {
-  //     setMensajes([]);
-  //     if (chat) {
-  //       const response = await fetch(
-  //         `http://localhost:3001/mensajes/${chat}`,
-  //         {
-  //           method: "GET",
-  //           headers: { Authorization: `Bearer ${token}` },
-  //         }
-  //       );
-  //       const data = await response.json();
-  //       setMensajes(data);
-  //     }
-  //   }
-
-  //   fetchMensajes();
-  // }, [chat]);
-
-  // useEffect(() => {
-  //   socket.on('message', (mensaje) => {
-  //     setMensajes((mensajes) => [...mensajes, mensaje]);
-  //   });
-  // }, []);
 
   const sendMessage = async (event) => {
     event.preventDefault();
