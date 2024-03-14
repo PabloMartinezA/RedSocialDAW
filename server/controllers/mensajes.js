@@ -13,8 +13,8 @@ export const getUserMessages = async (req, res) => {
 
     res.status(200).json(mensajes);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ msg: "Internal server error" });
+    console.log(err);
+    res.status(500).json({ error: err.message});
   }
 };
 
@@ -38,6 +38,6 @@ export const postMessage = async (req, res) => {
     res.status(201).json(savedMensaje);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ msg: "Internal server error" });
+    res.status(500).json({ error: err.message });
   }
 };
