@@ -1,4 +1,3 @@
-import { Home } from "@mui/icons-material";
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import HomePage from "scenes/homePage";
 import LoginPage from "scenes/loginPage";
@@ -8,6 +7,7 @@ import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
+import { SnackbarProvider } from "notistack";
 
 function App() {
   const mode = useSelector((state) => state.mode);
@@ -18,18 +18,20 @@ function App() {
     <div className="app">
       <BrowserRouter>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route
-              path="/home"
-              element={isAuth ? <HomePage /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/profile/:userId"
-              element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
-            />
-          </Routes>
+          <SnackbarProvider anchorOrigin={{horizontal: "right", vertical: "bottom"}}>
+            <CssBaseline />
+            <Routes>
+              <Route path="/" element={<LoginPage />} />
+              <Route
+                path="/home"
+                element={isAuth ? <HomePage /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/profile/:userId"
+                element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
+              />
+            </Routes>
+          </SnackbarProvider>
         </ThemeProvider>
       </BrowserRouter>
     </div>

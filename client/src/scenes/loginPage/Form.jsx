@@ -17,6 +17,7 @@ import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
 import { Palette } from "@mui/icons-material";
 import fetch from "fetch.js";
+import { error } from "components/alerts";
 
 const registerSchema = yup.object().shape({
   nombre: yup.string().required("required"),
@@ -58,44 +59,52 @@ const Form = () => {
   const isRegister = pageType === "register";
 
   const register = async (values, onSubmitProps) => {
-    // Esto nos permite enviar informacion del formulario incluyendo imagenes
-    const formData = new FormData();
-    for (let value in values) {
-      formData.append(value, values[value]);
-    }
-    formData.append("imgRuta", values.img.name);
-
-    const savedUserResponse = await fetch(
-      "/auth/register",
-      {
-        method: "POST",
-        body: formData,
+    try {
+      // Esto nos permite enviar informacion del formulario incluyendo imagenes
+      const formData = new FormData();
+      for (let value in values) {
+        formData.append(value, values[value]);
       }
-    );
-    const savedUser = await savedUserResponse.json();
-    onSubmitProps.resetForm();
+      formData.append("imgRuta", values.img.name);
 
-    if (savedUser) {
-      setPageType("login");
+      const savedUserResponse = await fetch(
+        "/auth/register",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const savedUser = await savedUserResponse.json();
+      onSubmitProps.resetForm();
+
+      if (savedUser) {
+        setPageType("login");
+      }
+    } catch (err) {
+      error(err);
     }
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
-    const loggedIn = await loggedInResponse.json();
-    onSubmitProps.resetForm();
-    if (loggedIn) {
-      dispatch(
-        setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
-        })
-      );
-      navigate("/home");
+    try {
+      const loggedInResponse = await fetch("/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      const loggedIn = await loggedInResponse.json();
+      onSubmitProps.resetForm();
+      if (loggedIn) {
+        dispatch(
+          setLogin({
+            user: loggedIn.user,
+            token: loggedIn.token,
+          })
+        );
+        navigate("/home");
+      }
+    } catch (err) {
+      error(err);
     }
   };
 

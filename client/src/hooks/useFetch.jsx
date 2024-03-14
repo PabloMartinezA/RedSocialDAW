@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_BASE_URL ?
-  process.env.REACT_APP_BACKEND_BASE_URL : "http://localhost:3001";
+import { BACKEND_URL } from "fetch";
 
 export const useFetch = ({ url = "", options = null }) => {
   const [data, setData] = useState(undefined);
