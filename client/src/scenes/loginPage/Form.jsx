@@ -15,9 +15,7 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
-import { Palette } from "@mui/icons-material";
-import fetch from "fetch.js";
-import { error } from "components/alerts";
+import api from "api";
 
 const registerSchema = yup.object().shape({
   nombre: yup.string().required("required"),
@@ -59,52 +57,40 @@ const Form = () => {
   const isRegister = pageType === "register";
 
   const register = async (values, onSubmitProps) => {
-    try {
-      // Esto nos permite enviar informacion del formulario incluyendo imagenes
-      const formData = new FormData();
-      for (let value in values) {
-        formData.append(value, values[value]);
-      }
-      formData.append("imgRuta", values.img.name);
+    // Esto nos permite enviar informacion del formulario incluyendo imagenes
+    const formData = new FormData();
+    for (let value in values) {
+      formData.append(value, values[value]);
+    }
+    formData.append("imgRuta", values.img.name);
 
-      const savedUserResponse = await fetch(
-        "/auth/register",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      const savedUser = await savedUserResponse.json();
-      onSubmitProps.resetForm();
-
-      if (savedUser) {
-        setPageType("login");
+    const savedUser = await api(
+      "/auth/register",
+      {
+        method: "POST",
+        body: formData,
       }
-    } catch (err) {
-      error(err);
+    );
+
+    if (savedUser) {
+      setPageType("login");
     }
   };
 
   const login = async (values, onSubmitProps) => {
-    try {
-      const loggedInResponse = await fetch("/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-      const loggedIn = await loggedInResponse.json();
-      onSubmitProps.resetForm();
-      if (loggedIn) {
-        dispatch(
-          setLogin({
-            user: loggedIn.user,
-            token: loggedIn.token,
-          })
-        );
-        navigate("/home");
-      }
-    } catch (err) {
-      error(err);
+    const loggedIn = await api("/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
+    if (loggedIn) {
+      dispatch(
+        setLogin({
+          user: loggedIn.user,
+          token: loggedIn.token,
+        })
+      );
+      navigate("/home");
     }
   };
 
