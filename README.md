@@ -21,7 +21,7 @@ Proyecto basado en el siguiente video: <https://www.youtube.com/watch?v=K8YELRmU
     JWT_SECRET = [palabra]
     PORT = 3001
 
-  6. Correr la aplicación con `nodemon index.js`.
+  6. Correr la aplicación con `npm run start`.
 
 ### CLIENT
 
