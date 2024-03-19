@@ -11,9 +11,12 @@ const chatSlice = createSlice({
     setChatUser: (state, action) => {
       state.chatUser = action.payload.user;
     },
+    clearChatUser: (state) => {
+      state.chatUser = initialState.chatUser;
+    },
   }
 });
 
 const { actions, reducer } = chatSlice;
-export const { setChatUser } = actions;
+export const { setChatUser, clearChatUser } = actions;
 export default reducer;

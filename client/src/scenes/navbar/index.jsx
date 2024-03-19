@@ -86,7 +86,7 @@ const Navbar = () => {
             )}
           </IconButton>
           <IconButton onClick={() => navigate("/chat")}>
-            <Message sx={{ fontSize: "25px" }} />
+            <Message sx={{ fontSize: "25px", color: dark }} />
           </IconButton>
           <Notifications sx={{ fontSize: "25px" }} />
           <Help sx={{ fontSize: "25px" }} />
@@ -165,7 +165,7 @@ const Navbar = () => {
               )}
             </IconButton>
             <IconButton onClick={() => navigate("/chat")}>
-              <Message sx={{ fontSize: "25px" }} />
+              <Message sx={{ fontSize: "25px", color: dark }} />
             </IconButton>
             <Notifications sx={{ fontSize: "25px" }} />
             <Help sx={{ fontSize: "25px" }} />

@@ -9,7 +9,7 @@ export const getUserMessages = async (req, res) => {
     const mensajes = await Message.find({
       remitenteId: { $in: [remitenteId, destinatarioId] },
       destinatarioId: { $in: [remitenteId, destinatarioId] },
-    }).sort({ createdAt: -1 });
+    }).sort();
 
     res.status(200).json(mensajes);
   } catch (err) {

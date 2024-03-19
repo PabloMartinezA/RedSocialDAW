@@ -9,7 +9,6 @@ const api = async (url = "", options = null) => {
     const response = await fetch(URL, options);
     const data = await response.json();
     if (response.ok) {
-
       return data;
     } else if (response.status !== 500) {
       warning(data.msg);
