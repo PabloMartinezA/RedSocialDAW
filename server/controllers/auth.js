@@ -28,8 +28,8 @@ export const register = async (req, res) => {
       amigos,
       ubicacion,
       ocupacion,
-      vistasPerfil: Math.floor(Math.random() * 10000),
-      impresiones: Math.floor(Math.random() * 10000),
+      vistasPerfil: 0,
+      impresiones: 0,
     });
     const savedUser = await newUser.save();
     res.status(201).json(savedUser);

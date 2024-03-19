@@ -18,7 +18,7 @@ const UserWidget = ({ usuarioId, imgRuta }) => {
   const [user, setUser] = useState(null);
   const { palette } = useTheme();
   const navigate = useNavigate();
-  const token = useSelector((state) => state.token);
+  const token = useSelector((state) => state.auth.token);
   const dark = palette.neutral.dark;
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
@@ -36,6 +36,7 @@ const UserWidget = ({ usuarioId, imgRuta }) => {
 
   useEffect(() => {
     getUser();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!user) {

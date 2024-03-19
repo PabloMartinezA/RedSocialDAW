@@ -23,16 +23,15 @@ import {
 } from "@mui/icons-material";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setMode, setLogout } from "state";
+import { setMode, setLogout } from "state/auth";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
-import zIndex from "@mui/material/styles/zIndex";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.auth.user);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
   const theme = useTheme();
@@ -87,7 +86,7 @@ const Navbar = () => {
             )}
           </IconButton>
           <IconButton onClick={() => navigate("/chat")}>
-            <Message sx={{ fontSize: "25px" }} />
+            <Message sx={{ fontSize: "25px", color: dark }} />
           </IconButton>
           <Notifications sx={{ fontSize: "25px" }} />
           <Help sx={{ fontSize: "25px" }} />
@@ -166,7 +165,7 @@ const Navbar = () => {
               )}
             </IconButton>
             <IconButton onClick={() => navigate("/chat")}>
-              <Message sx={{ fontSize: "25px" }} />
+              <Message sx={{ fontSize: "25px", color: dark }} />
             </IconButton>
             <Notifications sx={{ fontSize: "25px" }} />
             <Help sx={{ fontSize: "25px" }} />
