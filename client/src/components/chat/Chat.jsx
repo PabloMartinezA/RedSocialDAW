@@ -128,7 +128,7 @@ const Chat = () => {
           ) : (
             <>
               { messages?.map((message) => {
-                return <ChatMessage message={message} error={message.error} />
+                return <ChatMessage message={message} />
               })}
             </>
           )}
