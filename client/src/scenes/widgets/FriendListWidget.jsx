@@ -13,15 +13,16 @@ const FriendListWidget = ({ usuarioId }) => {
   const friends = useSelector((state) => state.auth.user.amigos);
 
   const getFriends = async () => {
-    const response = await 
-    api(`/users/${usuarioId}/friends`,
+    const response = await api(`/usuarios/${usuarioId}/friends`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    
-    dispatch(setFriends({ friends: response}));
+
+    if (response) {
+      dispatch(setFriends({ friends: response}));
+    }
   };
 
   useEffect(() => {
@@ -43,8 +44,8 @@ const FriendListWidget = ({ usuarioId }) => {
           <Friend
             key={friend._id}
             friendId={friend._id}
-            nombre={`${friend.Nombre} ${friend.apellido}`}
-            subtitle={friend.occupacion}
+            name={`${friend.nombre} ${friend.apellido}`}
+            subtitle={friend.ocupacion}
             usuarioImgRuta={friend.imgRuta}
           />
         ))}

@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { setFriends } from "state/auth";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
+import api from "api";
 
 const Friend = ({friendId, name, subtitle, usuarioImgRuta}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {_id} = useSelector((state) => state.auth.user);
     const token = useSelector((state) => state.auth.token);
-    const friends = useSelector ((state) => state.auth.user.friends);
+    const friends = useSelector ((state) => state.auth.user.amigos);
 
     const {palette} = useTheme();
     const primaryLight = palette.primaryLight;
@@ -21,19 +22,20 @@ const Friend = ({friendId, name, subtitle, usuarioImgRuta}) => {
 
     const isFriend = friends.find((friend) => friend._id === friendId);
     const patchFriend = async () => {
-        const response = await fetch(
-            `http://localhost:3001/usuarios/${_id}/${friendId}`,
-            {
-                method: "PATCH",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-        const data = await response.json();
-        dispatch(setFriends({friends:data}));
+      const response = await api(`/usuarios/${_id}/${friendId}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response) {
+        dispatch(setFriends({friends:response}));
+      }
     };
+
     return (
         <FlexBetween>
           <FlexBetween gap="1rem">
