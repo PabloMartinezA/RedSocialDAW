@@ -1,31 +1,31 @@
-import { useState } from "react";
 import {
   Box,
+  FormControl,
   IconButton,
   InputBase,
-  Typography,
-  Select,
   MenuItem,
-  FormControl,
-  useTheme,
+  Select,
+  Typography,
   useMediaQuery,
+  useTheme,
 } from "@mui/material";
+import { useState } from "react";
 
 import {
-  Search,
-  Message,
-  DarkMode,
-  LightMode,
-  Notifications,
-  Help,
-  Menu,
   Close,
+  DarkMode,
+  Help,
+  LightMode,
+  Menu,
+  Message,
+  Notifications,
+  Search,
 } from "@mui/icons-material";
 
-import { useDispatch, useSelector } from "react-redux";
-import { setMode, setLogout } from "state/auth";
-import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setLogout, setMode } from "state/auth";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -58,8 +58,9 @@ const Navbar = () => {
             },
           }}
         >
-          Z
+        Z
         </Typography>
+        
         {isNonMobileScreens && (
           <FlexBetween
             backgroundColor={neutralLight}

@@ -1,26 +1,22 @@
-import express from "express";
 import bodyParser from "body-parser";
-import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import multer from "multer";
+import express from "express";
 import helmet from "helmet";
-import morgan from "morgan";
-import path from "path";
 import { createServer } from "http";
+import mongoose from "mongoose";
+import morgan from "morgan";
+import multer from "multer";
+import path from "path";
 import { Server } from "socket.io";
 import { fileURLToPath } from "url";
-import authRoutes from "./routes/auth.js";
-import userRoutes from "./routes/usuarios.js";
-import postRoutes from "./routes/publicaciones.js";
-import messageRoutes from "./routes/mensajes.js";
 import { register } from "./controllers/auth.js";
 import { createPost } from "./controllers/publicaciones.js";
-import { verifyToken } from "./middleware/auth.js";
-import User from "./models/Usuarios.js";
-import Post from "./models/Publicaciones.js";
-import { users, posts } from "./data/index.js";
-import { socketVerifyToken } from "./middleware/auth.js";
+import { socketVerifyToken, verifyToken } from "./middleware/auth.js";
+import authRoutes from "./routes/auth.js";
+import messageRoutes from "./routes/mensajes.js";
+import postRoutes from "./routes/publicaciones.js";
+import userRoutes from "./routes/usuarios.js";
 
 /* CONFIGURACIONES */
 const __filename = fileURLToPath(import.meta.url);
