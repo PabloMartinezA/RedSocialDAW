@@ -25,13 +25,13 @@ const PostWidget = ({
     const [isComments, setIsComments] = useState(false);
     const dispatch = useDispatch();
     const token = useSelector((state) => state.auth.token);
-    const loggedInUsuarioId = useSelector((state) => state.user._id);
+    const loggedInUsuarioId = useSelector((state) => state.auth.user._id);
     const isLiked = Boolean(likes[loggedInUsuarioId]);
     const likeCount = Object.keys(likes).length;
 
     const {palette} = useTheme();
     const main = palette.neutral.main;
-    const primary = palette.primary .medium;
+    const primary = palette.primary.medium;
 
     const patchLike = async() => {
         const response = await fetch (`http://localhost:3001/publicaciones/${postId}/like`, {
@@ -43,7 +43,7 @@ const PostWidget = ({
             body: JSON.stringify({usuarioId: loggedInUsuarioId}),
         });
         const updatedPost = await response.json();
-        dispatch(setPost({post: updatePost}));
+        dispatch(setPost({post: updatedPost}));
     };
 
     return (
@@ -80,10 +80,10 @@ const PostWidget = ({
                         <Typography> {likeCount}</Typography>
                     </FlexBetween>
                     <FlexBetween gap="0.3rem">
-                        <IconButton onClick={() => setIsComments(!isCommentsarios)} >
+                        <IconButton onClick={() => setIsComments(!isComments)} >
                             <chatBubbleOutlineOutlined />
                         </IconButton>
-                        <Typography> {Commentarios.length}</Typography>
+                        <Typography> {comentarios.length}</Typography>
                     </FlexBetween>
                 </FlexBetween>
                 <IconButton>
@@ -92,7 +92,7 @@ const PostWidget = ({
             </FlexBetween>
             {isComments && (
                 <Box mt="0.5rem">
-                    {Commentarios.map((commentario, i) => (
+                    {comentarios.map((commentario, i) => (
                         <Box key={`${nombre}-${i}`}>
                             <Divider />
                             <Typography  sx={{color: main, m:"0.5rem 0", pl: "1rem"}}>

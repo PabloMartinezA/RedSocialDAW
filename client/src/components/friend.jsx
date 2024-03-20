@@ -6,10 +6,10 @@ import { setFriends } from "state";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 
-const Friend = ({friendId, name, subtitle, imgUsuarioRuta}) => {
+const Friend = ({friendId, name, subtitle, usuarioImgRuta}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {_id} = useSelector((state) = state.auth.user);
+    const {_id} = useSelector((state) => state.auth.user);
     const token = useSelector((state) => state.auth.token);
     const friends = useSelector ((state) => state.auth.user.friends);
 
@@ -76,4 +76,4 @@ const Friend = ({friendId, name, subtitle, imgUsuarioRuta}) => {
       );
 };
 
-export default friend;
+export default Friend;

@@ -24,6 +24,8 @@ import { useState } from "react";
 import Dropzone from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state/auth";
+import api from "api";
+
   const MyPostWidget = ({ imgRuta }) => {
     const dispatch = useDispatch();
     const [isImage, setIsImage] = useState(false);
@@ -45,13 +47,12 @@ import { setPosts } from "state/auth";
         formData.append("imgRuta", image.name);
       }
   
-      const response = await fetch(`http://localhost:3001/publicaciones`, {
+      const response = await api("/publicaciones", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
-      const posts = await response.json();
-      dispatch(setPosts({ posts }));
+      dispatch(setPosts({ posts: response }));
       setImage(null);
       setPost("");
     };
