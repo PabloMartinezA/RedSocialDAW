@@ -55,7 +55,7 @@ const PostsWidget = ({ usuarioId, isProfile = false }) => {
                 }) => (
                     <PostWidget
                     key= {_id}
-                    post_id={_id}
+                    postId={_id}
                     postUsuarioId={usuarioId}
                     nombre={`${nombre} ${apellido}`}
                     descripcion={descripcion}

@@ -1,15 +1,17 @@
 import {
     FavoriteBorderOutlined,
     FavoriteOutlined,
-    ShareOutlined
+    ShareOutlined,
+    ChatBubbleOutline,
 } from "@mui/icons-material";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
+import Friend from "components/Friend";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state/auth";
-
+import api, { BACKEND_URL } from "api";
 
 const PostWidget = ({
     postId,
@@ -34,7 +36,7 @@ const PostWidget = ({
     const primary = palette.primary.medium;
 
     const patchLike = async() => {
-        const response = await fetch (`http://localhost:3001/publicaciones/${postId}/like`, {
+        const response = await api(`/publicaciones/${postId}/like`, {
             method: "PATCH",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -42,15 +44,14 @@ const PostWidget = ({
             },
             body: JSON.stringify({usuarioId: loggedInUsuarioId}),
         });
-        const updatedPost = await response.json();
-        dispatch(setPost({post: updatedPost}));
+        dispatch(setPost({post: response}));
     };
 
     return (
         <WidgetWrapper m="2rem 0">
-            <friend
-                friendId= {postUsuarioId}
-                nombre={nombre}
+            <Friend
+                friendId={postUsuarioId}
+                name={nombre}
                 subtitle={ubicacion}
                 usuarioImgRuta={usuarioImgRuta}
             />
@@ -63,7 +64,7 @@ const PostWidget = ({
                 height="auto"
                 alt="post"
                 style={{borderRadius: "0.75rem", marginTop: "0.75rem"}}
-                src={`http://localhost:3001/assets/${imgRuta}`}
+                src={`${BACKEND_URL}/assets/${imgRuta}`}
                 />
             )}
             <FlexBetween mt="0.25rem">
@@ -77,11 +78,11 @@ const PostWidget = ({
                                 <FavoriteBorderOutlined />
                              )}
                         </IconButton>
-                        <Typography> {likeCount}</Typography>
+                        <Typography>{likeCount}</Typography>
                     </FlexBetween>
                     <FlexBetween gap="0.3rem">
                         <IconButton onClick={() => setIsComments(!isComments)} >
-                            <chatBubbleOutlineOutlined />
+                            <ChatBubbleOutline />
                         </IconButton>
                         <Typography> {comentarios.length}</Typography>
                     </FlexBetween>

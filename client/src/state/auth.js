@@ -19,8 +19,9 @@ export const authSlice = createSlice({
       state.token = action.payload.token;
     },
     setLogout: (state) => {
-      state.user = null;
-      state.token = null;
+      state.user = initialState.user;
+      state.token = initialState.token;
+      state.posts = initialState.posts;
     },
     setFriends: (state, action) => {
       if (state.user) {

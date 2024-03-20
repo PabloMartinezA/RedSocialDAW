@@ -12,16 +12,16 @@ export const createPost = async (req, res) => {
       apellido: user.apellido,
       ubicacion: user.ubicacion,
       descripcion,
-      usuarioImgRuta: user.usuarioImgRuta,
+      usuarioImgRuta: user.imgRuta,
       imgRuta,
       likes: {},
       comentarios: [],
     });
     await newPost.save();
 
-    const post = await Post.find();
+    const posts = await Post.find().sort({createdAt: -1});
 
-    res.status(201).json(post);
+    res.status(201).json(posts);
   } catch (err) {
     res.status(409).json({ msg: err.message });
   }
@@ -30,8 +30,8 @@ export const createPost = async (req, res) => {
 /* LECTURA */
 export const getFeedPosts = async (req, res) => {
   try {
-    const post = await Post.find();
-    res.status(200).json(post);
+    const posts = await Post.find().sort({createdAt: -1});
+    res.status(200).json(posts);
   } catch (err) {
     res.status(404).json({ msg: err.message });
   }
@@ -40,8 +40,8 @@ export const getFeedPosts = async (req, res) => {
 export const getUserPosts = async (req, res) => {
   try {
     const { usuarioId } = req.params;
-    const post = await Post.find({ usuarioId });
-    res.status(200).json(post);
+    const posts = await Post.find({ usuarioId }).sort({createdAt: -1});
+    res.status(200).json(posts);
   } catch (err) {
     res.status(404).json({ msg: err.message });
   }

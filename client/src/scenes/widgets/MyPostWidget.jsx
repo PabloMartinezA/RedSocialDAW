@@ -37,26 +37,28 @@ import api from "api";
     const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
     const mediumMain = palette.neutral.mediumMain;
     const medium = palette.neutral.medium;
-  
+
     const handlePost = async () => {
       const formData = new FormData();
-      formData.append("userId", _id);
+      formData.append("usuarioId", _id);
       formData.append("descripcion", post);
       if (image) {
         formData.append("img", image);
         formData.append("imgRuta", image.name);
       }
-  
+
       const response = await api("/publicaciones", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
-      dispatch(setPosts({ posts: response }));
-      setImage(null);
-      setPost("");
+      if (response) {
+        dispatch(setPosts({ posts: response }));
+        setImage(null);
+        setPost("");
+      }
     };
-  
+
     return (
       <WidgetWrapper>
         <FlexBetween gap="1.5rem">
