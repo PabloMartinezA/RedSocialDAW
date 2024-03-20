@@ -1,4 +1,4 @@
-import Post from "../models/Publicacion.js";
+import Post from "../models/Publicaciones.js";
 import User from "../models/Usuarios.js";
 
 /* CREAR */
