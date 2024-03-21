@@ -1,9 +1,10 @@
 import User from "../models/Usuarios.js";
+import Post from "../models/Publicaciones.js";
 
 /* IMPLEMENTACION SOAP */
 const service = {
   ZSocial_Service: {
-    Users_Port: {
+    DAW_Port: {
       getUser: async function (args) {
         const id = args.id;
         const user = await User.findById(id);
@@ -42,8 +43,29 @@ const service = {
         } else {
           return { message: 'No user found'};
         }
-      }
-    }
+      },
+      getPost: async function (args) {
+        const id = args.id;
+        const post = await Post.findById(id);
+
+        if (post) {
+          const result = {
+            post: {
+              id: post.id,
+              usuarioId: post.usuarioId,
+              ubicacion: post.ubicacion,
+              descripcion: post.descripcion,
+              imgRuta: post.imgRuta,
+              likes: { usuarioId: Array.from(post.likes.keys()) },
+              comentarios: { comentario: post.comentarios },
+            }
+          };
+          return result;
+        } else {
+          return { message: "No post found" };
+        }
+      },
+    },
   }
 };
 
