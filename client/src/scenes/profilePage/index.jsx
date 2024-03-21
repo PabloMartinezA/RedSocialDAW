@@ -1,6 +1,6 @@
-import { Box, Button, IconButton, useMediaQuery } from "@mui/material";
+import { Box, Button, IconButton, useMediaQuery, TextField, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import Navbar from "scenes/navbar";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
@@ -8,13 +8,14 @@ import MyPostWidget from "scenes/widgets/MyPostWidget";
 import PostsWidget from "scenes/widgets/PostsWidget";
 import UserWidget from "scenes/widgets/UserWidget";
 import api from "api";
+import { setUser, setLogout } from "state/auth";
 
 import { useNavigate } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
 import { useTheme } from "@mui/material";
 
 const ProfilePage = () => {
-  const [user, setUser] = useState(null);
+  const [profileUser, setProfileUser] = useState(null);
   const { userId } = useParams();
   const token = useSelector((state) => state.auth.token);
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
@@ -24,14 +25,15 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const { palette } = useTheme();
   const main = palette.neutral.main;
-  const currentUserId = useSelector((state) => state.auth.user._id);
+  const { _id: currentUserId, imgRuta: currentUserImgRuta } = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
 
   const getUser = async () => {
     const data = await api(`/usuarios/${userId}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
-    setUser(data);
+    setProfileUser(data);
   };
 
   useEffect(() => {
@@ -39,13 +41,17 @@ const ProfilePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!user) {
+  if (!profileUser) {
     return null;
   }
 
   const handleEdit = () => {
-    setIsEditing(true);
-    setNewUserData(user);
+    if (isEditing) {
+      setIsEditing(false);
+    } else {
+      setIsEditing(true);
+      setNewUserData(profileUser);
+    }
   };
 
   const handleInputChange = (event) => {
@@ -55,7 +61,8 @@ const ProfilePage = () => {
     });
   };
 
-  const handleSave = async () => {
+  const handleSave = async (event) => {
+    event.preventDefault();
     const updatedUser = await api(`/usuarios/${userId}`, {
       method: "PUT",
       headers: {
@@ -64,8 +71,11 @@ const ProfilePage = () => {
       },
       body: JSON.stringify(newUserData),
     });
-    setUser(updatedUser);
-    setIsEditing(false);
+    if (updatedUser) {
+      setProfileUser(updatedUser);
+      dispatch(setUser({ user: updatedUser }));
+      setIsEditing(false);
+    }
   };
 
   const handleDelete = async () => {
@@ -73,12 +83,11 @@ const ProfilePage = () => {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
+    dispatch(setLogout());
     // Redirigir al usuario a la página de inicio después de eliminar su cuenta
     navigate("/");
   };
 
-  console.log("currentUserId:", currentUserId); // Añade esta línea
-  console.log("userId:", userId); // Añade esta línea
   return (
     <Box>
       <Navbar />
@@ -90,11 +99,11 @@ const ProfilePage = () => {
         justifyContent="center"
       >
         <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
-          <UserWidget usuarioId={userId} imgRuta={user.imgRuta} />
+          <UserWidget usuarioId={userId} imgRuta={profileUser.imgRuta} />
 
           {currentUserId === userId && (
             <Box p="1rem 0">
-              <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
+              <Stack direction="row" spacing={1} mb="0.5rem">
                 <IconButton>
                   <Delete
                     onClick={handleDelete}
@@ -102,8 +111,6 @@ const ProfilePage = () => {
                     sx={{ color: main }}
                   />
                 </IconButton>
-              </Box>
-              <Box display="flex" alignItems="center" gap="1rem">
                 <IconButton>
                   <Edit
                     onClick={handleEdit}
@@ -111,46 +118,38 @@ const ProfilePage = () => {
                     sx={{ color: main }}
                   />
                 </IconButton>
+              </Stack>
+              <Box display="flex" alignItems="center" gap="1rem">
                 <Box>
                   {isEditing ? (
                     <form onSubmit={handleSave}>
-                      <label>
-                        Nombre:
-                        <input
-                          type="text"
+                      <Stack spacing={1} >
+                        <TextField
                           name="nombre"
+                          label="Nombre"
                           value={newUserData.nombre}
                           onChange={handleInputChange}
                         />
-                      </label>
-                      <label>
-                        Apellido:
-                        <input
-                          type="text"
+                        <TextField
                           name="apellido"
+                          label="Apellido"
                           value={newUserData.apellido}
                           onChange={handleInputChange}
                         />
-                      </label>
-                      <label>
-                        Ubicacion:
-                        <input
-                          type="text"
+                        <TextField
                           name="ubicacion"
+                          label="Ubicacion"
                           value={newUserData.ubicacion}
                           onChange={handleInputChange}
                         />
-                      </label>
-                      <label>
-                        Ocupacion:
-                        <input
-                          type="text"
+                        <TextField
                           name="ocupacion"
+                          label="Ocupacion"
                           value={newUserData.ocupacion}
                           onChange={handleInputChange}
                         />
-                      </label>
-                      <Button type="submit">Guardar cambios</Button>
+                        <Button type="submit">Guardar cambios</Button>
+                      </Stack>
                     </form>
                   ) : null}
                 </Box>
@@ -164,7 +163,7 @@ const ProfilePage = () => {
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
-          <MyPostWidget imgRuta={user.imgRuta} />
+          <MyPostWidget imgRuta={currentUserImgRuta} />
           <Box m="2rem 0" />
           <PostsWidget usuarioId={userId} isProfile />
         </Box>
