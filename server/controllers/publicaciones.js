@@ -19,7 +19,7 @@ export const createPost = async (req, res) => {
     });
     await newPost.save();
 
-    const posts = await Post.find().sort({createdAt: -1});
+    const posts = await Post.find().sort({ createdAt: -1 });
 
     res.status(201).json(posts);
   } catch (err) {
@@ -30,7 +30,7 @@ export const createPost = async (req, res) => {
 /* LECTURA */
 export const getFeedPosts = async (req, res) => {
   try {
-    const posts = await Post.find().sort({createdAt: -1});
+    const posts = await Post.find().sort({ createdAt: -1 });
     res.status(200).json(posts);
   } catch (err) {
     res.status(404).json({ msg: err.message });
@@ -39,8 +39,8 @@ export const getFeedPosts = async (req, res) => {
 
 export const getUserPosts = async (req, res) => {
   try {
-    const { usuarioId } = req.params;
-    const posts = await Post.find({ usuarioId }).sort({createdAt: -1});
+    const { userId: usuarioId } = req.params; // Cambia 'userId' a 'usuarioId'
+    const posts = await Post.find({ usuarioId }).sort({ createdAt: -1 }); // Cambia 'userId' a 'usuarioId'
     res.status(200).json(posts);
   } catch (err) {
     res.status(404).json({ msg: err.message });

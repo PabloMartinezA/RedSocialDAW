@@ -61,3 +61,25 @@ export const addRemoveFriend = async (req, res) => {
     res.status(404).json({ msg: err.message });
   }
 };
+
+/* ACTUALIZACION */
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findByIdAndUpdate(id, req.body, { new: true });
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(404).json({ msg: err.message });
+  }
+};
+
+/* ELIMINACION */
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await User.findByIdAndDelete(id);
+    res.status(200).json({ msg: "Usuario eliminado" });
+  } catch (err) {
+    res.status(404).json({ msg: err.message });
+  }
+};
