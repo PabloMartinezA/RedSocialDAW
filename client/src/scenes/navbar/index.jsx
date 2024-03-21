@@ -1,31 +1,31 @@
-import { useState } from "react";
 import {
   Box,
+  FormControl,
   IconButton,
   InputBase,
-  Typography,
-  Select,
   MenuItem,
-  FormControl,
-  useTheme,
+  Select,
+  Typography,
   useMediaQuery,
+  useTheme,
 } from "@mui/material";
+import { useState } from "react";
 
 import {
-  Search,
-  Message,
-  DarkMode,
-  LightMode,
-  Notifications,
-  Help,
-  Menu,
   Close,
+  DarkMode,
+  Help,
+  LightMode,
+  Menu,
+  Message,
+  Notifications,
+  Search,
 } from "@mui/icons-material";
-
-import { useDispatch, useSelector } from "react-redux";
-import { setMode, setLogout } from "state/auth";
-import { useNavigate } from "react-router-dom";
+import LogoSVG from "components/LogoSVG";
 import FlexBetween from "components/FlexBetween";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setLogout, setMode } from "state/auth";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -38,7 +38,6 @@ const Navbar = () => {
   const neutralLight = theme.palette.neutral.light;
   const dark = theme.palette.neutral.dark;
   const background = theme.palette.background.default;
-  const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
 
   const nombreCompleto = `${user.nombre} ${user.apellido}`;
@@ -46,20 +45,11 @@ const Navbar = () => {
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
       <FlexBetween gap="1.75rem">
-        <Typography
-          fontWeight="bold"
-          fontSize="2rem"
-          color="primary"
+        <IconButton
           onClick={() => navigate("/home")}
-          sx={{
-            "&:hover": {
-              color: primaryLight,
-              cursor: "pointer",
-            },
-          }}
         >
-          Z
-        </Typography>
+          <LogoSVG />
+        </IconButton>
         {isNonMobileScreens && (
           <FlexBetween
             backgroundColor={neutralLight}
