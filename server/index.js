@@ -17,6 +17,9 @@ import authRoutes from "./routes/auth.js";
 import messageRoutes from "./routes/mensajes.js";
 import postRoutes from "./routes/publicaciones.js";
 import userRoutes from "./routes/usuarios.js";
+import soap from "soap";
+import { readFileSync } from "fs";
+import service from "./services/service.js";
 
 /* CONFIGURACIONES */
 const __filename = fileURLToPath(import.meta.url);
@@ -40,6 +43,9 @@ const io = new Server(httpServer, {
   }
 });
 io.use(socketVerifyToken);
+
+/* WSDL */
+const xml = readFileSync("service.wsdl", "utf-8");
 
 /* ALMACENAMIENTO DE ARCHIVOS */
 const storage = multer.diskStorage({
@@ -68,7 +74,11 @@ const PORT = process.env.PORT || 6001;
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => {
-    httpServer.listen(PORT, () => console.log(`Server Port ${PORT}`));
+    httpServer.listen(PORT, () => {
+      console.log(`Server Port ${PORT}`);
+      soap.listen(app, "/soap", service, xml, () =>
+        console.log(`Server SOAP listening on :${PORT}/soap`));
+    });
 
     io.on("connect", (socket) => {
       console.log(`Socket ${socket.id} connected`);
