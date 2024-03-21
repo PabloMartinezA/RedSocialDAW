@@ -1,9 +1,4 @@
-import {
-  EditOutlined,
-  LocationOnOutlined,
-  ManageAccountsOutlined,
-  WorkOutlineOutlined,
-} from "@mui/icons-material";
+import { LocationOnOutlined, WorkOutlineOutlined } from "@mui/icons-material";
 
 import { Box, Divider, Typography, useTheme } from "@mui/material";
 import api from "api";
@@ -24,19 +19,16 @@ const UserWidget = ({ usuarioId, imgRuta }) => {
   const main = palette.neutral.main;
 
   const getUser = async () => {
-    const data = await api(
-      `/usuarios/${usuarioId}`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const data = await api(`/usuarios/${usuarioId}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
     setUser(data);
   };
 
   useEffect(() => {
     getUser();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!user) {
@@ -80,7 +72,6 @@ const UserWidget = ({ usuarioId, imgRuta }) => {
             <Typography color={medium}>{amigos.length} amigos</Typography>
           </Box>
         </FlexBetween>
-        <ManageAccountsOutlined />
       </FlexBetween>
 
       <Divider />
@@ -125,28 +116,26 @@ const UserWidget = ({ usuarioId, imgRuta }) => {
 
         <FlexBetween gap="1rem" mb="0.5rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/twitter.png" alt="linkedin" />
+            <img src="../assets/twitter.png" alt="Twitter" />
             <Box>
               <Typography color={main} fontWeight="500">
-                Linkedin
+                Twitter / X
               </Typography>
               <Typography color={medium}>Plataforma Social</Typography>
             </Box>
           </FlexBetween>
-          <EditOutlined sx={{ color: main }} />
         </FlexBetween>
 
         <FlexBetween gap="1rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/linkedin.png" alt="twitter" />
+            <img src="../assets/linkedin.png" alt="LinkedIn" />
             <Box>
               <Typography color={main} fontWeight="500">
-                Twitter
+                LinkedIn
               </Typography>
               <Typography color={medium}>Red Social</Typography>
             </Box>
           </FlexBetween>
-          <EditOutlined sx={{ color: main }} />
         </FlexBetween>
       </Box>
     </WidgetWrapper>
