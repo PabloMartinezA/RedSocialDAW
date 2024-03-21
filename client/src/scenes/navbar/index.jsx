@@ -21,7 +21,7 @@ import {
   Notifications,
   Search,
 } from "@mui/icons-material";
-
+import LogoSVG from "components/LogoSVG";
 import FlexBetween from "components/FlexBetween";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -38,7 +38,6 @@ const Navbar = () => {
   const neutralLight = theme.palette.neutral.light;
   const dark = theme.palette.neutral.dark;
   const background = theme.palette.background.default;
-  const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
 
   const nombreCompleto = `${user.nombre} ${user.apellido}`;
@@ -46,21 +45,11 @@ const Navbar = () => {
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
       <FlexBetween gap="1.75rem">
-        <Typography
-          fontWeight="bold"
-          fontSize="2rem"
-          color="primary"
+        <IconButton
           onClick={() => navigate("/home")}
-          sx={{
-            "&:hover": {
-              color: primaryLight,
-              cursor: "pointer",
-            },
-          }}
         >
-        Z
-        </Typography>
-        
+          <LogoSVG />
+        </IconButton>
         {isNonMobileScreens && (
           <FlexBetween
             backgroundColor={neutralLight}
