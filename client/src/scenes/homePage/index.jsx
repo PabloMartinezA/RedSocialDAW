@@ -30,10 +30,13 @@ const HomePage = () => {
           <MyPostWidget imgRuta={imgRuta} />
           <PostsWidget userId={_id} />
         </Box>
-        {isNonMobileScreens && <Box flexBasis="26%"></Box>}
-        <AdvertWidget />
-        <Box m="2rem 0 " />
-         <FriendListWidget usuarioId={_id} />
+        { isNonMobileScreens && (
+          <Box flexBasis="26%">
+            <AdvertWidget />
+            <Box m="2rem 0" />
+            <FriendListWidget usuarioId={_id} />
+          </Box>
+        )}
       </Box>
     </Box>
   );
