@@ -73,7 +73,7 @@ app.use("/publicaciones", postRoutes);
 app.use("/mensajes", messageRoutes);
 
 /* MONGOOSE SETUP */
-/*const PORT = process.env.PORT || 6001;
+const PORT = process.env.PORT || 6001;
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => {
@@ -99,27 +99,8 @@ mongoose
       })
     });
 
-    /* INICIALIZACION DE DATOS 
-    //User.insertMany(users);
-    //Post.insertMany(posts);
+    /* INICIALIZACION DE DATOS */
+    // User.insertMany(users);
+    // Post.insertMany(posts);
   })
-  .catch((error) => console.log(`${error} no se ha conectado`));*/
-
-mongoose
-  .connect(`mongodb://mongodb:27017/docker-db`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Conectado a MONGODB");
-    app.listen(3001, () => {
-      console.log("El servidor está escuchando en el puerto 3001");
-    });
-
-    /* INICIALIZACION DE DATOS (Cuidado al reiniciar el servidor o crasheara si no comentas estas lineas)*/
-    User.insertMany(users);
-    Post.insertMany(posts);
-  })
-  .catch((err) => {
-    console.error("Fallo al conectarse a MONGODB", err);
-  });
+  .catch((error) => console.log(`${error} no se ha conectado`));
