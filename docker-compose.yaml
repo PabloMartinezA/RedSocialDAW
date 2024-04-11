@@ -1,0 +1,29 @@
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    volumes:
+      - ./data:/data/db
+
+  backend:
+    build: ./server
+    container_name: backend
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./client
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client/src:/app/src
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
