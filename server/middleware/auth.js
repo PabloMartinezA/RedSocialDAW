@@ -12,7 +12,7 @@ export const verifyToken = async (req, res, next) => {
       token = token.slice(7, token.length).trimLeft();
     }
 
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    const verified = jwt.verify(token, "siu");
     req.user = verified;
     next();
   } catch (err) {
@@ -22,17 +22,17 @@ export const verifyToken = async (req, res, next) => {
 
 export const socketVerifyToken = async (socket, next) => {
   try {
-    const token = socket.handshake.auth?.token
+    const token = socket.handshake.auth?.token;
     console.log(token);
     if (!token) {
-      return next({ type: 'auth', error: 'Acceso denegado'});
+      return next({ type: "auth", error: "Acceso denegado" });
     }
 
-    const { id } = jwt.verify(token, process.env.JWT_SECRET);
+    const { id } = jwt.verify(token, "siu");
     socket.userId = id;
     return next();
   } catch (err) {
     console.error(err);
-    return next({ type: 'internal', error: 'Internal server error'});
+    return next({ type: "internal", error: "Internal server error" });
   }
 };

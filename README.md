@@ -12,16 +12,20 @@ Proyecto basado en el siguiente video: <https://www.youtube.com/watch?v=K8YELRmU
 ### SERVER
 
   1. Abrir una terminal en la carpeta `server`.
-  2. Instalar las dependencias de Node.js con `npm install`.
-  3. Crear un cluster con su cuenta en MongoDB.
-  4. Copiar la conexión al cluster para la aplicación.
-  5. Crear un archivo llamado `.env` en el directorio con la siguiente estructura y reemplazar los elementos:
+  2. Si no cuentas con nodemon, instalalo con el siguiente comando.
+
+    npm install -g nodemon
+  
+  3. Instalar las dependencias de Node.js con `npm install`.
+  4. Crear un cluster con su cuenta en MongoDB.
+  5. Copiar la conexión al cluster para la aplicación.
+  6. Crear un archivo llamado `.env` en el directorio con la siguiente estructura y reemplazar los elementos:
 
     MONGO_URL = [conexion a mongodb]
     JWT_SECRET = [palabra]
     PORT = 3001
 
-  6. Correr la aplicación con `npm run start`.
+  7. Correr la aplicación con `npm run start`.
 
 ### CLIENT
 
@@ -41,4 +45,28 @@ Proyecto basado en el siguiente video: <https://www.youtube.com/watch?v=K8YELRmU
   3. Correr el comando para iniciar el servidor `nodemon index.js` en la carpeta `server`.
   4. Una vez hecho el paso anterior es necesario volver a comentar las líneas de código del paso 2.
 
-De momento se puede observar la barra de navegacion y el modo oscuro en funcionamiento pero es necesario entrar en la pagina de `/home` ademas de retirar el elemento de autorizacion dentro de `client > src > App.js` en la línea 26
+## CORRER EN DOCKER
+
+### SERVER
+
+Abre una terminal en el directorio `/server` y corre los comandos.
+
+  1. Crea la imagen con el tag redsocialdaw-server.
+
+    docker build -t redsocialdaw-server .
+  
+  2. Crea un contenedor  usando la imagen creada, con el nombre redsocialdaw-server-1, expone el puerto 3001 y lo corre como daemon.
+
+    docker run --name redsocialdaw-server-1 -p 3001:3001 -d redsocialdaw-server
+
+### CLIENT
+
+Abre una terminal en el directorio `/client` y corre los comandos.
+
+  1. Crea la imagen con el tag redsocialdaw-client.
+
+    docker build -t redsocialdaw-client .
+  
+  2. Crea un contenedor  usando la imagen creada, con el nombre redsocialdaw-client-1, expone el puerto 3000 y lo corre como daemon.
+
+    docker run --name redsocialdaw-client-1 -p 3000:3000 -d redsocialdaw-client

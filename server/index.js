@@ -20,6 +20,9 @@ import userRoutes from "./routes/usuarios.js";
 import soap from "soap";
 import { readFileSync } from "fs";
 import service from "./services/service.js";
+import User from "./models/Usuarios.js";
+import Post from "./models/Publicaciones.js";
+import { users, posts } from "./data/index.js";
 
 /* CONFIGURACIONES */
 const __filename = fileURLToPath(import.meta.url);
@@ -40,7 +43,7 @@ const io = new Server(httpServer, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
-  }
+  },
 });
 io.use(socketVerifyToken);
 
@@ -97,7 +100,7 @@ mongoose
     });
 
     /* INICIALIZACION DE DATOS */
-    //User.insertMany(users);
-    //Post.insertMany(posts);
+    // User.insertMany(users);
+    // Post.insertMany(posts);
   })
   .catch((error) => console.log(`${error} no se ha conectado`));
