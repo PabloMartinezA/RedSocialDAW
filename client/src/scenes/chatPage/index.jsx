@@ -1,8 +1,8 @@
 import { Stack, Box, useMediaQuery } from "@mui/material";
 import { useSelector } from "react-redux";
-import Navbar from "scenes/navbar";
-import UserChats from "components/chat/UserChats";
-import Chat from "components/chat/Chat";
+import Navbar from "@/scenes/navbar";
+import UserChats from "@/components/chat/UserChats";
+import Chat from "@/components/chat/Chat";
 
 const ChatPage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");

@@ -1,7 +1,7 @@
-import { error, warning } from "components/alerts";
+import { error, warning } from "@/components/alerts";
 
-export const BACKEND_URL = process.env.REACT_APP_BACKEND_BASE_URL ?
-  process.env.REACT_APP_BACKEND_BASE_URL : "http://localhost:3001";
+export const BACKEND_URL = import.meta.env.VITE_APP_BACKEND_BASE_URL ?
+  import.meta.env.VITE_APP_BACKEND_BASE_URL : "http://localhost:3001";
 
 const api = async (url = "", options = null) => {
   const URL = `${BACKEND_URL}${url}`;

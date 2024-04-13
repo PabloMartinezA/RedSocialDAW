@@ -16,14 +16,14 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import FlexBetween from "components/FlexBetween";
-import UserImage from "components/UserImage";
-import WidgetWrapper from "components/WidgetWrapper";
+import FlexBetween from "@/components/FlexBetween";
+import UserImage from "@/components/UserImage";
+import WidgetWrapper from "@/components/WidgetWrapper";
 import { useState } from "react";
 import Dropzone from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
-import { setPosts } from "state/auth";
-import api from "api";
+import { setPosts } from "@/state/auth";
+import api from "@/api";
 
 const MyPostWidget = ({ imgRuta }) => {
   const dispatch = useDispatch();

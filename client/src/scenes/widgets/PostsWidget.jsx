@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPosts } from "state/auth";
+import { setPosts } from "@/state/auth";
 import PostWidget from "./PostWidget";
-import api from "api";
+import api from "@/api";
 
 const PostsWidget = ({ usuarioId, isProfile = false }) => {
   const dispatch = useDispatch();

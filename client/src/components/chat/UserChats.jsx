@@ -1,6 +1,6 @@
 import { Box, Stack, TextField, Skeleton } from "@mui/material";
-import UserChatButton from "./UserChatButton";
-import { useFetch } from "hooks/useFetch";
+import UserChatButton from "@/components/chat/UserChatButton";
+import { useFetch } from "@/hooks/useFetch";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 

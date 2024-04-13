@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import api from "api";
+import api from "@/api";
 
 export const useFetch = ({ url = "", options = null }) => {
   const [data, setData] = useState(undefined);

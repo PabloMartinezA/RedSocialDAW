@@ -2,13 +2,13 @@ import { Box, Button, IconButton, useMediaQuery, TextField, Stack } from "@mui/m
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import Navbar from "scenes/navbar";
-import FriendListWidget from "scenes/widgets/FriendListWidget";
-import MyPostWidget from "scenes/widgets/MyPostWidget";
-import PostsWidget from "scenes/widgets/PostsWidget";
-import UserWidget from "scenes/widgets/UserWidget";
-import api from "api";
-import { setUser, setLogout } from "state/auth";
+import Navbar from "@/scenes/navbar";
+import FriendListWidget from "@/scenes/widgets/FriendListWidget";
+import MyPostWidget from "@/scenes/widgets/MyPostWidget";
+import PostsWidget from "@/scenes/widgets/PostsWidget";
+import UserWidget from "@/scenes/widgets/UserWidget";
+import api from "@/api";
+import { setUser, setLogout } from "@/state/auth";
 
 import { useNavigate } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
