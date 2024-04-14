@@ -2,6 +2,15 @@
 
 Proyecto basado en el siguiente video: <https://www.youtube.com/watch?v=K8YELRmUb5o>
 
+1. [Requerimientos](#requerimientos)
+2. [Pasos para ejecutar el proyecto](#pasos-para-ejecutar-el-proyecto)
+    1. [Server](#server)
+    2. [Client](#client)
+    3. [Datos de prueba](#datos-de-prueba)
+3. [Correr en Docker](#correr-en-docker)
+    1. [Posibles errores de importación](#posibles-errores-de-importación)
+    2. [Borrar volumenes sin utilizar](#borrar-volumenes-sin-utilizar)
+
 ## Requerimientos
 
 - Es necesario tener instalado [Node.js](https://nodejs.org/en).
@@ -47,26 +56,28 @@ Proyecto basado en el siguiente video: <https://www.youtube.com/watch?v=K8YELRmU
 
 ## CORRER EN DOCKER
 
-### SERVER
+Levantar el server, cliente y base de datos de mongo ingresando el siguiente comando en el directorio principal:
 
-Abre una terminal en el directorio `/server` y corre los comandos.
+    docker compose up -d
 
-  1. Crea la imagen con el tag redsocialdaw-server.
+Para detenerlo use:
 
-    docker build -t redsocialdaw-server .
-  
-  2. Crea un contenedor  usando la imagen creada, con el nombre redsocialdaw-server-1, expone el puerto 3001 y lo corre como daemon.
+    docker compose down
 
-    docker run --name redsocialdaw-server-1 -p 3001:3001 -d redsocialdaw-server
+### Posibles errores de importación
 
-### CLIENT
+Si ha creado imágenes de la aplicación anteriormente, es posible que le aparezcan errores de importaciones que no se resuelven que contienen una estructura como "@/components/MyComponent"
 
-Abre una terminal en el directorio `/client` y corre los comandos.
+Se ha cambiado de usar CRA a Vite, por lo que si antes había creado las imagenes para la aplicación tendrá que reconstruirlas con el siguiente comando:
 
-  1. Crea la imagen con el tag redsocialdaw-client.
+    docker compose build --no-cache
 
-    docker build -t redsocialdaw-client .
-  
-  2. Crea un contenedor  usando la imagen creada, con el nombre redsocialdaw-client-1, expone el puerto 3000 y lo corre como daemon.
+Aunque le dejará unas imágenes que aparecerán con un tag "none" y estado "dangling", remuevelas con el siguiente comando ya que solo consumen espacio en disco.
 
-    docker run --name redsocialdaw-client-1 -p 3000:3000 -d redsocialdaw-client
+    docker images --quiet --filter=dangling=true | xargs --no-run-if-empty docker rmi
+
+### Borrar volumenes sin utilizar
+
+Puede que tenga volumenes en docker que no son utilizados por ningún contenedor, puede eliminarlos con:
+
+    docker system prune --volumes

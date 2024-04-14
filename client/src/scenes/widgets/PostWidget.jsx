@@ -5,13 +5,13 @@ import {
     ChatBubbleOutline,
 } from "@mui/icons-material";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
-import FlexBetween from "components/FlexBetween";
-import WidgetWrapper from "components/WidgetWrapper";
-import Friend from "components/Friend";
+import FlexBetween from "@/components/FlexBetween";
+import WidgetWrapper from "@/components/WidgetWrapper";
+import Friend from "@/components/Friend";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPost } from "state/auth";
-import api, { BACKEND_URL } from "api";
+import { setPost } from "@/state/auth";
+import api, { BACKEND_URL } from "@/api";
 
 const PostWidget = ({
     postId,

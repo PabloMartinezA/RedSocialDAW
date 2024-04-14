@@ -12,10 +12,10 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setLogin } from "state/auth";
+import { setLogin } from "@/state/auth";
 import Dropzone from "react-dropzone";
-import FlexBetween from "components/FlexBetween";
-import api from "api";
+import FlexBetween from "@/components/FlexBetween";
+import api from "@/api";
 
 const registerSchema = yup.object().shape({
   nombre: yup.string().required("required"),

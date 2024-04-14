@@ -1,13 +1,13 @@
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
-import HomePage from "scenes/homePage";
-import LoginPage from "scenes/loginPage";
-import ProfilePage from "scenes/profilePage";
-import ChatPage from "scenes/chatPage";
+import HomePage from "@/scenes/homePage";
+import LoginPage from "@/scenes/loginPage";
+import ProfilePage from "@/scenes/profilePage";
+import ChatPage from "@/scenes/chatPage";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import { themeSettings } from "./theme";
+import { themeSettings } from "@/theme";
 import { SnackbarProvider } from "notistack";
 
 function App() {

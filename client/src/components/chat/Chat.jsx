@@ -12,10 +12,10 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SendIcon from "@mui/icons-material/Send";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { socket } from "socket";
-import { clearChatUser} from "state/chat";
-import api from "api";
-import ChatMessage from "components/chat/ChatMessage";
+import { socket } from "@/socket";
+import { clearChatUser} from "@/state/chat";
+import api from "@/api";
+import ChatMessage from "@/components/chat/ChatMessage";
 
 const Chat = () => {
   const user = useSelector((state) => state.auth.user);

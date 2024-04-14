@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
-import UserImage from "components/UserImage";
+import UserImage from "@/components/UserImage";
 
 const ChatMessage = ({message, error = false}) => {
   const user = useSelector((state) => state.auth.user);

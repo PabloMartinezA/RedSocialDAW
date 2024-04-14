@@ -1,10 +1,10 @@
 import { LocationOnOutlined, WorkOutlineOutlined } from "@mui/icons-material";
 
 import { Box, Divider, Typography, useTheme } from "@mui/material";
-import api from "api";
-import FlexBetween from "components/FlexBetween";
-import UserImage from "components/UserImage";
-import WidgetWrapper from "components/WidgetWrapper";
+import api from "@/api";
+import FlexBetween from "@/components/FlexBetween";
+import UserImage from "@/components/UserImage";
+import WidgetWrapper from "@/components/WidgetWrapper";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";

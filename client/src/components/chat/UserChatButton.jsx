@@ -1,7 +1,7 @@
 import { Button, Typography, useTheme } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { setChatUser } from "state/chat";
-import UserImage from "components/UserImage";
+import { setChatUser } from "@/state/chat";
+import UserImage from "@/components/UserImage";
 
 const UserChatButton= ({ user }) => {
   const { palette } = useTheme();

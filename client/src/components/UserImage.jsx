@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { BACKEND_URL } from "api";
+import { BACKEND_URL } from "@/api";
 
 const UserImage = ({ image, size = "60px" }) => {
   return (

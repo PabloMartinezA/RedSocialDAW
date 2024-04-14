@@ -21,11 +21,11 @@ import {
   Notifications,
   Search,
 } from "@mui/icons-material";
-import LogoSVG from "components/LogoSVG";
-import FlexBetween from "components/FlexBetween";
+import LogoSVG from "@/components/LogoSVG";
+import FlexBetween from "@/components/FlexBetween";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setLogout, setMode } from "state/auth";
+import { setLogout, setMode } from "@/state/auth";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
