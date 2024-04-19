@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cliente SOAP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        function parseISOString(s) {
+            var b = s.split(/\D+/);
+            return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
+        }
+
+        // on DOM ready...
+        $(function () {
+            // esconder la tarjeta correspondiente cuando el cliente de clic en la X
+            $("button.btn-close").on('click', function (event) {
+                event.preventDefault();
+                $(this).closest('div.card').hide();
+            });
+            // the following event handler will handle click events for BUTTON
+            $("#BTNGETUSER").on('click', function (event) {
+                var email = $('#Email').val();
+
+                var soapRequest = `<?xml version="1.0" encoding="utf-8"?>
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                    <soapenv:Body>
+                        <app:GetUser xmlns:app="http://localhost:3001/soap">
+                            <Email>${email}</Email>
+                        </app:GetUser>
+                    </soapenv:Body>
+                </soapenv:Envelope>`;
+
+                var webserUrl = "http://localhost:3001/soap?wsdl";
+                var self = this;
+                self.disabled = true;
+                $.ajax({
+                    type: "POST",
+                    url: webserUrl,
+                    dataType: "xml",
+                    processData: false,
+                    contentType: "text/xml; charset=\"utf-8\"",
+                    data: soapRequest,
+                    success: function (data, status, req) {
+                        if (status == "success") {
+                            var obj = {
+                                UserId: $(req.responseXML).find('UserId').text(),
+                                Nombre: $(req.responseXML).find('Nombre').text(),
+                                Apellido: $(req.responseXML).find('Apellido').text(),
+                                Email: $(req.responseXML).find('Email').text(),
+                                ImgRuta: $(req.responseXML).find('ImgRuta').text(),
+                                Ubicacion: $(req.responseXML).find('Ubicacion').text(),
+                                Ocupacion: $(req.responseXML).find('Ocupacion').text(),
+                                VistasPerfil: $(req.responseXML).find('VistasPerfil').text(),
+                                Impresiones: $(req.responseXML).find('Impresiones').text(),
+                                CreatedAt: $(req.responseXML).find('CreatedAt').text(),
+                                UpdatedAt: $(req.responseXML).find('UpdatedAt').text(),
+                            };
+
+                            $('#Img').attr("src", `http://localhost:3001/assets/${obj.ImgRuta}`);
+                            $('#ResponseModal>.card-body').html(`
+                                <h5>${obj.Nombre} ${obj.Apellido}</h5>
+                                <h6>${obj.Email}</h6>
+                                <p>
+                                    <i class="bi bi-suitcase-lg"></i> ${obj.Ocupacion}<br>
+                                    <i class="bi bi-geo-alt"></i> ${obj.Ubicacion}<br>
+                                    <i class="bi bi-eye"></i> ${obj.VistasPerfil}<br>
+                                    <i class="bi bi-heart"></i> ${obj.Impresiones}<br>
+                                    Se unió en ${parseISOString(obj.CreatedAt).toDateString()}<br>
+                                    Ultima actualización en ${parseISOString(obj.UpdatedAt).toDateString()}
+                                </p>
+                            `);
+
+                            $('#ResponseModal').show();
+                        }
+                    },
+                    error: function (data, status, req) {
+                        $('#errmsg').text(data.responseText);
+                    },
+                    complete: function (data, status) {
+                        self.disabled = false;
+                    }
+                });
+            });
+
+            $("#BTNGETPOST").on('click', function (event) {
+                var postId = $('#PostId').val();
+
+                var soapRequest = `<?xml version="1.0" encoding="utf-8"?>
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                    <soapenv:Body>
+                        <app:GetPost xmlns:app="http://localhost:3001/soap">
+                            <PostId>${postId}</PostId>
+                        </app:GetPost>
+                    </soapenv:Body>
+                </soapenv:Envelope>`;
+
+                var webserUrl = "http://localhost:3001/soap?wsdl";
+                var self = this;
+                self.disabled = true;
+                $.ajax({
+                    type: "POST",
+                    url: webserUrl,
+                    dataType: "xml",
+                    processData: false,
+                    contentType: "text/xml; charset=\"utf-8\"",
+                    data: soapRequest,
+                    success: function (data, status, req) {
+                        if (status == "success") {
+                            var obj = {
+                                PostId: $(req.responseXML).find('PostId').text(),
+                                PostDescripcion: $(req.responseXML).find('PostDescripcion').text(),
+                                PostImgRuta: $(req.responseXML).find('PostImgRuta').text(),
+                                CreatedAt: $(req.responseXML).find('CreatedAt').text(),
+                                UpdatedAt: $(req.responseXML).find('UpdatedAt').text(),
+                                UserId: $(req.responseXML).find('UserId').text(),
+                                UserNombre: $(req.responseXML).find('UserNombre').text(),
+                                UserApellido: $(req.responseXML).find('UserApellido').text(),
+                                UserUbicacion: $(req.responseXML).find('UserUbicacion').text(),
+                            };
+
+                            $('#Img').attr("src", `http://localhost:3001/assets/${obj.PostImgRuta}`);
+                            $('#ResponseModal>.card-body').html(`
+                                <h5>${obj.UserNombre} ${obj.UserApellido}</h5>
+                                <p>
+                                    <i class="bi bi-geo-alt"></i> ${obj.UserUbicacion}<br>
+                                    Creado en ${parseISOString(obj.CreatedAt).toDateString()}<br>
+                                    Ultima actualización en ${parseISOString(obj.UpdatedAt).toDateString()}
+                                    ${obj.PostDescripcion}
+                                </p>
+                            `);
+
+                            $('#ResponseModal').show();
+                        }
+                    },
+                    error: function (data, status, req) {
+                        $('#errmsg').text(data.responseText);
+                    },
+                    complete: function (data, status) {
+                        self.disabled = false;
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body style="background-color: gray;">
+    <div class="container" style="height: 100vh; background-color: white;">
+        <h1>Cliente SOAP</h1>
+
+        <div id="GetUser">
+            <h3>GetUser</h3>
+            <form runat="server">
+                <div class="mb-3">
+                    <label for="Email" class="form-label">Email</label>
+                    <input id="Email" type="text" class="form-control" aria-describedby="EmailHelp">
+                </div>
+                <button id="BTNGETUSER" class="btn btn-primary" type="button">Realizar</button>
+            </form>
+        </div>
+
+        <div id="GetPost">
+            <h3>GetPost</h3>
+            <form runat="server">
+                <div class="mb-3">
+                    <label for="PostId" class="form-label">PostId</label>
+                    <input id="PostId" type="text" class="form-control" aria-describedby="PostIdHelp">
+                </div>
+                <button id="BTNGETPOST" class="btn btn-primary" type="button">Realizar</button>
+            </form>
+        </div>
+
+        <div id="ResponseModal" class="card" style="position:fixed; bottom: 1rem; right: 1rem; width: 22rem; display: none;">
+            <button type="button" class="btn-close" aria-label="Close" style="position:absolute; top: 10px; right: 10px;"></button>
+            <img id="Img" class="card-img-top" alt="user-image">
+            <div class="card-body">
+                <p class="card-text">...</p>
+            </div>
+        </div>
+        <div id="errmsg"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</body>
+</html>
