@@ -100,6 +100,7 @@ mongoose
     });
 
     /* INICIALIZACION DE DATOS */
+    // console.log("INICIALIZANDO DATOS DE PRIMER USO, COMENTAR DESPUES DE INICIAR EL SERVIDOR");
     // User.insertMany(users);
     // Post.insertMany(posts);
   })

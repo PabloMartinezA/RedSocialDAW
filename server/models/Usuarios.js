@@ -37,6 +37,7 @@ const UserSchema = new mongoose.Schema(
     ocupacion: String,
     vistasPerfil: Number,
     impresiones: Number,
+    esAdmin: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

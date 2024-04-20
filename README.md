@@ -24,7 +24,7 @@ Proyecto basado en el siguiente video: <https://www.youtube.com/watch?v=K8YELRmU
   2. Si no cuentas con nodemon, instalalo con el siguiente comando.
 
     npm install -g nodemon
-  
+
   3. Instalar las dependencias de Node.js con `npm install`.
   4. Crear un cluster con su cuenta en MongoDB.
   5. Copiar la conexión al cluster para la aplicación.
@@ -47,9 +47,10 @@ Proyecto basado en el siguiente video: <https://www.youtube.com/watch?v=K8YELRmU
   1. Los datos de prueba se encuentran en el directorio `server > data > index.js`.
   2. Dentro del archivo `server > index.js` descomentar las líneas 67 - 68:<br>
 
-    66 /* INICIALIZACION DE DATOS */
-    67 //User.insertMany(users);
-    68 //Post.insertMany(posts);
+    102 /* INICIALIZACION DE DATOS */
+    103 //console.log("INICIALIZANDO DATOS DE PRIMER USO, COMENTAR DESPUES DE INICIAR EL SERVIDOR");
+    104 //User.insertMany(users);
+    105 //Post.insertMany(posts);
 
   3. Correr el comando para iniciar el servidor `nodemon index.js` en la carpeta `server`.
   4. Una vez hecho el paso anterior es necesario volver a comentar las líneas de código del paso 2.
