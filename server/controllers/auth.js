@@ -49,7 +49,7 @@ export const login = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ msg: "Credenciales no validas. " });
 
-    const token = jwt.sign({ id: user._id }, "siu");
+    const token = jwt.sign({ id: user._id, admin: user.esAdmin, }, process.env.JWT_SECRET);
     delete user.contrasena;
     res.status(200).json({ token, user });
   } catch (err) {

@@ -41,6 +41,7 @@ const Navbar = () => {
   const alt = theme.palette.background.alt;
 
   const nombreCompleto = `${user.nombre} ${user.apellido}`;
+  const esAdmin = user.esAdmin;
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -101,6 +102,11 @@ const Navbar = () => {
               <MenuItem value={nombreCompleto}>
                 <Typography>{nombreCompleto}</Typography>
               </MenuItem>
+              { esAdmin ? (
+                <MenuItem onClick={() => navigate("/admin")}>
+                  Página admin
+                </MenuItem>
+              ) : null}
               <MenuItem onClick={() => dispatch(setLogout())}>
                 Cerrar Sesion
               </MenuItem>
@@ -180,6 +186,11 @@ const Navbar = () => {
                 <MenuItem value={nombreCompleto}>
                   <Typography>{nombreCompleto}</Typography>
                 </MenuItem>
+                { esAdmin ? (
+                  <MenuItem onClick={() => navigate("/admin")}>
+                    Página admin
+                  </MenuItem>
+                ) : null}
                 <MenuItem onClick={() => dispatch(setLogout())}>
                   Cerrar Sesion
                 </MenuItem>

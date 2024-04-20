@@ -12,7 +12,7 @@ export const verifyToken = async (req, res, next) => {
       token = token.slice(7, token.length).trimLeft();
     }
 
-    const verified = jwt.verify(token, "siu");
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
     req.user = verified;
     next();
   } catch (err) {
@@ -23,12 +23,12 @@ export const verifyToken = async (req, res, next) => {
 export const socketVerifyToken = async (socket, next) => {
   try {
     const token = socket.handshake.auth?.token;
-    console.log(token);
+
     if (!token) {
       return next({ type: "auth", error: "Acceso denegado" });
     }
 
-    const { id } = jwt.verify(token, "siu");
+    const { id } = jwt.verify(token, process.env.JWT_SECRET);
     socket.userId = id;
     return next();
   } catch (err) {
