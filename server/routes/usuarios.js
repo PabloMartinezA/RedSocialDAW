@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getUsers,
   getUser,
   getUserFriends,
   addRemoveFriend,
@@ -11,6 +12,7 @@ import { verifyToken } from "../middleware/auth.js";
 const router = express.Router();
 
 /* LECTURA */
+router.get("/", verifyToken, getUsers);
 router.get("/:id", verifyToken, getUser);
 router.get("/:id/friends", verifyToken, getUserFriends);
 

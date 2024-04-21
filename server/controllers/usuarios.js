@@ -1,6 +1,15 @@
 import User from "../models/Usuarios.js";
 
 /* LECTURA */
+export const getUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+}
+
 export const getUser = async (req, res) => {
   try {
     const { id } = req.params;

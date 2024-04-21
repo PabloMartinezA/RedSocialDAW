@@ -107,7 +107,10 @@ const Navbar = () => {
                   Página admin
                 </MenuItem>
               ) : null}
-              <MenuItem onClick={() => dispatch(setLogout())}>
+              <MenuItem onClick={() => {
+                dispatch(setLogout());
+                navigate("/");
+              }}>
                 Cerrar Sesion
               </MenuItem>
             </Select>
@@ -191,7 +194,10 @@ const Navbar = () => {
                     Página admin
                   </MenuItem>
                 ) : null}
-                <MenuItem onClick={() => dispatch(setLogout())}>
+                <MenuItem onClick={() => {
+                  dispatch(setLogout());
+                  navigate("/");
+                }}>
                   Cerrar Sesion
                 </MenuItem>
               </Select>
