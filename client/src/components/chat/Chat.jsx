@@ -63,7 +63,7 @@ const Chat = () => {
       setLoading(true);
       setMessages([]);
       if (chatUser) {
-        const chatMessages = await api(`/mensajes/${chatUser._id}`, {
+        const chatMessages = await api(`/mensajes/usuario/${chatUser._id}`, {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         });
