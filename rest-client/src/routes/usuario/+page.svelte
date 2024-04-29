@@ -104,6 +104,7 @@
         });
 
         if (response.ok) {
+            clear();
             alert("Usuario eliminado");
         } else {
             alert(response.statusText);

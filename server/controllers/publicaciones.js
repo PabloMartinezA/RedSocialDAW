@@ -4,13 +4,13 @@ import User from "../models/Usuarios.js";
 /* CREAR */
 export const createPost = async (req, res) => {
   try {
-    const { usuarioId, descripcion, imgRuta } = req.body;
+    const { usuarioId, ubicacion, descripcion, imgRuta } = req.body;
     const user = await User.findById(usuarioId);
     const newPost = new Post({
       usuarioId,
       nombre: user.nombre,
       apellido: user.apellido,
-      ubicacion: user.ubicacion,
+      ubicacion: ubicacion ? ubicacion : user.ubicacion,
       descripcion,
       usuarioImgRuta: user.imgRuta,
       imgRuta,
@@ -47,6 +47,16 @@ export const getUserPosts = async (req, res) => {
   }
 };
 
+export const getPost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await Post.findById(id);
+    res.status(200).json(post);
+  } catch (err) {
+    res.status(404).json({ msg: err.message });
+  }
+}
+
 /* ACTUALIZACION */
 export const likePost = async (req, res) => {
   try {
@@ -68,6 +78,31 @@ export const likePost = async (req, res) => {
     );
 
     res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ msg: err.message });
+  }
+};
+
+export const updatePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await Post.findByIdAndUpdate(id, req.body, { new: true });
+    res.status(200).json(post);
+  } catch (err) {
+    res.status(404).json({ msg: err.message });
+  }
+};
+
+/* ELIMINACIÓN */
+export const deletePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await Post.findByIdAndDelete(id);
+    if (result) {
+      res.status(200).json({ msg: "Publicación eliminada"});
+    } else {
+      res.status(404).json({ msg: "No encontrado"});
+    }
   } catch (err) {
     res.status(404).json({ msg: err.message });
   }
