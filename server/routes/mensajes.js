@@ -1,11 +1,28 @@
 import express from "express";
-import { getUserMessages, postMessage } from './../controllers/mensajes.js';
+import {
+  getMessage,
+  getUserMessages,
+  postMessage,
+  postUserMessage,
+  updateMessage,
+  deleteMessage,
+} from './../controllers/mensajes.js';
 import { verifyToken } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/:id", verifyToken, getUserMessages);
+/* LECTURA */
+router.get("/:id", verifyToken, getMessage);
+router.get("/usuario/:id", verifyToken, getUserMessages);
 
-router.post("/:id", verifyToken, postMessage);
+/* CREACIÓN */
+router.post("/", verifyToken, postMessage);
+router.post("/:destinatarioId", verifyToken, postUserMessage);
+
+/* ACTUALIZACIÓN */
+router.put("/:id", verifyToken, updateMessage);
+
+/* ELIMINACIÓN */
+router.delete("/:id", verifyToken, deleteMessage);
 
 export default router;
