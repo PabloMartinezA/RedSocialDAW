@@ -29,7 +29,24 @@ services:
       - ./client:/app
     stdin_open: true
     tty: true
+  mongodb-chat:
+    image: mongo
+    container_name: mongodb-chat
+    ports:
+      - "27018:27017"
+  microservicio-chat:
+    build: ./microservicio-chat
+    container_name: microservicio-chat
+    ports:
+      - "3100:3000"
+    volumes:
+      - ./microservicio-chat:/app
+    stdin_open: true
+    tty: true
     depends_on:
-      - backend
+      - mongodb-chat
+    environment:
+      - MONGO_URL=mongodb://mongodb-chat:27017/chat
+      - PORT=3000
 volumes:
   mongodb_data:

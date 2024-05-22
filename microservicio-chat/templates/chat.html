@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Microservicio Chat</title>
+    <style>
+      body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
+      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+      #input:focus { outline: none; }
+      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages > li { margin: 0.5rem 1rem; padding: 0.5rem 1rem; color: white; border-radius: 1rem; }
+      #messages > li:nth-child(odd) { background: #efefef; }
+
+      #messages > li.my-msg { background-color: #48cc36; text-align: right; }
+      #messages > li.msg { background-color: #333; text-align: left; }
+
+      #header { display: flex; flex-direction: row; justify-content: space-between; }
+      #search { margin: 0.25rem }
+      #exit { background: #e74141; border: none; padding: 0.5rem 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <button id="exit" onclick=exitSession()>Exit</button>
+      <form id="search">
+        <input id="email" type="email" placeholder="Email de usuario">
+        <input type="submit" value="Buscar">
+      </form>
+    </div>
+    <h3 id="chatTitle"></h3>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" /><button id="sendBtn" disabled>Send</button>
+      <input id="destinatario" type="text" hidden>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      function createCookie(name,value,days) {
+        if (days) {
+          var date = new Date();
+          date.setTime(date.getTime()+(days*24*60*60*1000));
+          var expires = "; expires="+date.toGMTString();
+        }
+        else var expires = "";
+        document.cookie = name+"="+value+expires+"; path=/";
+      }
+
+      function readCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+          var c = ca[i];
+          while (c.charAt(0)==' ') c = c.substring(1,c.length);
+          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+      }
+
+      function appendMessage(msg) {
+        const item = document.createElement('li');
+        item.textContent = msg.contenido;
+        if (msg.destinatarioId == sessionStorage.getItem('user')) {
+          item.classList.add('msg');
+        } else {
+          item.classList.add('my-msg');
+        }
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      }
+
+      function exitSession() {
+        createCookie('token', '', -1) // borrar la cookie
+        sessionStorage.removeItem('user');
+        window.location.replace('/');
+      }
+
+      // redireccionar si no ha iniciado sesion
+      let token = readCookie('token');
+      let userId = sessionStorage.getItem('user');
+      if (!token || !userId) {
+        window.location.href = '/';
+      }
+
+      const socket = io();
+      socket.auth = { token };
+
+      const form = document.getElementById('form');
+      const input = document.getElementById('input');
+      const messages = document.getElementById('messages');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (input.value) {
+          const destinatario = document.getElementById('destinatario');
+          const message = {
+            remitenteId: userId,
+            destinatarioId: destinatario.value,
+            contenido: input.value,
+          }
+          socket.emit('sendMessage', message);
+          appendMessage(message);
+          input.value = '';
+
+          fetch('/mensajes/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(message),
+          })
+          .catch(err => alert(`El mensaje no pudo ser enviado.\n${err.message}`))
+        }
+      });
+
+      const searchForm = document.getElementById('search');
+      
+      searchForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        document.getElementById('messages').innerHTML = ''; // eliminar mensajes del chat
+        document.getElementById('chatTitle').textContent = ''; // limpiar titulo del chat
+
+        const email = document.getElementById('email').value;
+        if (email) {
+          var soapRequest = `<?xml version="1.0" encoding="utf-8"?>
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                    <soapenv:Body>
+                        <app:GetUser xmlns:app="http://localhost:3001/soap">
+                            <Email>${email}</Email>
+                        </app:GetUser>
+                    </soapenv:Body>
+                </soapenv:Envelope>`;
+          fetch("http://localhost:3001/soap?wsdl", {
+            method: "POST",
+            headers: {
+              'Content-Type': 'text/xml; charset=\"utf-8\"',
+            },
+            body: soapRequest,
+          })
+          .then(response => {
+            if (!response.ok) {
+                throw new Error('No se encontro al usuario');
+            }
+            return response.text();
+          })
+          .then(str => {
+            const xml = new DOMParser().parseFromString(str, "text/xml");
+            const destinatario = xml.getElementsByTagName('UserId')[0].innerHTML;
+            const nombre = xml.getElementsByTagName('Nombre')[0].innerHTML;
+            const apellido = xml.getElementsByTagName('Apellido')[0].innerHTML;
+            document.getElementById('destinatario').value = destinatario;
+            const title = document.getElementById('chatTitle');
+            title.textContent = `Chateando con ${nombre} ${apellido}`;
+
+            fetch(`/mensajes/${sessionStorage.getItem('user')}/${destinatario}`, {
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json' },
+            })
+            .then(response => response.json())
+            .then(json => {
+              for(const msg of json) {
+                appendMessage(msg);
+              }
+            });
+            document.getElementById('sendBtn').disabled = false;
+          })
+          .catch(err => {
+            alert(err.message);
+            document.getElementById('sendBtn').disabled = true;
+          });
+        }
+      })
+
+      socket.on('message', appendMessage);
+    </script>
+  </body>
+</html>

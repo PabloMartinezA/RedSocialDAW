@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Z Messenger</h1>
+    <form id="form">
+        <input id="email" type="text" placeholder="usuario@email.com">
+        <input id="password" type="password" placeholder="Contraseña">
+        <input type="submit" value="Ingresar">
+    </form>
+
+    <script>
+        function createCookie(name,value,days) {
+            if (days) {
+            var date = new Date();
+            date.setTime(date.getTime()+(days*24*60*60*1000));
+            var expires = "; expires="+date.toGMTString();
+            }
+            else var expires = "";
+            document.cookie = name+"="+value+expires+"; path=/";
+        }
+
+        const form = document.getElementById('form');
+        const inputEmail = document.getElementById('email');
+        const inputPass = document.getElementById('password');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            data = {
+                email: inputEmail.value,
+                contrasena: inputPass.value,
+            }
+            const response = await fetch('http://localhost:3001/auth/login', {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST',
+                body: JSON.stringify(data),
+            });
+            const json = await response.json();
+            if (response.ok) {
+                createCookie("token", json.token, 1);
+                sessionStorage.setItem("user", json.user._id);
+                window.location.replace("/chat");
+            } else {
+                alert(json.msg);
+            }
+        });
+    </script>
+</body>
+</html>
